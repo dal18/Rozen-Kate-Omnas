@@ -103,7 +103,7 @@
         }
 
         .hero-section {
-            background-image: url('img/profile.jpg');
+            background-image: url('img/i.jfif');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -338,14 +338,49 @@
         }
 
         .modal-image-container {
-            max-height: 75vh;
-            overflow: auto;
+            max-height: none;
+            overflow: visible;
             background: #f5f5f5;
             border-radius: 12px;
             padding: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .uploaded-file-preview {
+            max-width: 100%;
+            max-height: none;
+            width: 100%;
+            height: auto;
+            margin: 1rem auto;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            display: block;
+        }
+
+        .gallery-viewer {
+            max-height: 80vh;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .gallery-viewer::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .gallery-viewer::-webkit-scrollbar-track {
+            background: rgba(125, 38, 38, 0.1);
+            border-radius: 10px;
+        }
+
+        .gallery-viewer::-webkit-scrollbar-thumb {
+            background: var(--maroon-primary);
+            border-radius: 10px;
+        }
+
+        .gallery-viewer::-webkit-scrollbar-thumb:hover {
+            background: var(--maroon-medium);
         }
 
         /* Mobile Responsive Styles */
@@ -540,7 +575,7 @@
                         Lesson Plan
                     </h4>
                     <div class="gold-accent-line" style="margin: 0.75rem auto;"></div>
-                    <p class="subtitle-font text-lg text-center mb-6 leading-relaxed" style="color: var(--maroon-medium);">
+                    <p class="subtitle-font text-lg text-center mb-6 leading-relaxed" style="color: var(--maroon-medium); min-height: 3.5rem;">
                         Comprehensive lesson planning document showcasing educational methodology
                     </p>
                     
@@ -565,7 +600,9 @@
                         Evaluation Sheet
                     </h4>
                     <div class="gold-accent-line" style="margin: 0.75rem auto;"></div>
-                   
+                    <p class="subtitle-font text-lg text-center mb-6 leading-relaxed" style="color: var(--maroon-medium); min-height: 3.5rem;">
+                        &nbsp;
+                    </p>
                     
                     <button onclick="viewFile('evaluation-sheet')" class="btn-primary w-full py-4 px-6 text-white font-semibold text-base rounded-xl flex items-center justify-center gap-3 relative overflow-hidden">
                         <svg class="w-6 h-6 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -579,7 +616,7 @@
             <!-- Card 3: Documentation -->
             <div class="portfolio-card glass-card rounded-2xl overflow-hidden shadow-xl animate-slideInRight animate-delay-2">
                 <div class="doc-preview">
-                    <img src="artifacts/lesson.png" alt="Documentation Preview">
+                    <img src="artifacts/1.jfif" alt="Documentation Preview">
                 </div>
                 
                 <div class="p-6">
@@ -587,7 +624,9 @@
                         Documentation
                     </h4>
                     <div class="gold-accent-line" style="margin: 0.75rem auto;"></div>
-                   
+                    <p class="subtitle-font text-lg text-center mb-6 leading-relaxed" style="color: var(--maroon-medium); min-height: 3.5rem;">
+                        &nbsp;
+                    </p>
                     
                     <button onclick="viewFile('documentation')" class="btn-primary w-full py-4 px-6 text-white font-semibold text-base rounded-xl flex items-center justify-center gap-3 relative overflow-hidden">
                         <svg class="w-6 h-6 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -645,14 +684,20 @@
                 preview: 'artifacts/lesson.png'
             },
             evalSheet: {
-                path: 'artifacts/lesson.png',
+                path: 'artifacts/evaluation.jfif',
                 type: 'image',
-                preview: 'artifacts/lesson.png'
+                preview: 'artifacts/evaluation.jfif'
             },
             documentation: {
-                path: 'artifacts/lesson.png',
-                type: 'image',
-                preview: 'artifacts/lesson.png'
+                paths: [
+                    'artifacts/1.jfif',
+                    'artifacts/2.jfif',
+                    'artifacts/3.jfif',
+                    'artifacts/4.jfif',
+                    'artifacts/5.jfif'
+                ],
+                type: 'gallery',
+                preview: 'artifacts/1.jfif'
             }
         };
 
@@ -687,7 +732,9 @@
                     break;
             }
             
-            if (fileData.type === 'image') {
+            if (fileData.type === 'gallery') {
+                content = generateGalleryViewer(fileData, title);
+            } else if (fileData.type === 'image') {
                 content = generateImageViewer(fileData, title);
             } else if (fileData.type === 'pdf') {
                 content = generatePDFViewer(fileData, title);
@@ -709,24 +756,61 @@
                 <div class="gold-accent-line mb-8"></div>
                 
                 <div class="image-viewer">
-                    <div class="zoom-controls">
-                        <button class="zoom-btn" onclick="resetZoom()" title="Reset Zoom">
+                    <div class="modal-image-container" style="background: white; padding: 30px;">
+                        <img id="viewerImage" src="${fileData.path}" class="uploaded-file-preview" alt="${title}" style="transition: transform 0.3s ease; cursor: pointer; width: 100%; height: auto; max-width: 100%; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <a href="${fileData.path}" download="${title.replace(/ /g, '-')}" class="download-btn">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                             </svg>
-                        </button>
+                            Download ${title}
+                        </a>
                     </div>
                     
-                    <div class="modal-image-container">
-                        <img id="viewerImage" src="${fileData.path}" class="uploaded-file-preview" alt="${title}" style="transition: transform 0.3s ease; cursor: zoom-in;" onclick="toggleZoom()">
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(125, 38, 38, 0.05); border-radius: 12px; text-align: center;">
+                        <p class="text-sm text-gray-600">
+                            💡 <strong>Tip:</strong> Image displays in full A4 size. Scroll down to see the complete document.
+                        </p>
                     </div>
-                    
-                    <a href="${fileData.path}" download="${title.replace(/ /g, '-')}" class="download-btn">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                        Download ${title}
-                    </a>
+                </div>
+            `;
+        }
+
+        function generateGalleryViewer(fileData, title) {
+            const imagesHTML = fileData.paths.map((path, index) => `
+                <div class="gallery-item mb-10" style="page-break-inside: avoid;">
+                    <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                        <img src="${path}" class="uploaded-file-preview" alt="${title} ${index + 1}" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                    </div>
+                    <div class="text-center mt-4 mb-4">
+                        <span class="subtitle-font text-xl font-semibold" style="color: var(--maroon-medium);">📄 Image ${index + 1} of ${fileData.paths.length}</span>
+                    </div>
+                    <div class="text-center mb-6">
+                        <a href="${path}" download="${title.replace(/ /g, '-')}-${index + 1}" class="download-btn" style="display: inline-flex;">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Download Image ${index + 1}
+                        </a>
+                    </div>
+                    ${index < fileData.paths.length - 1 ? '<div style="border-bottom: 3px solid rgba(125, 38, 38, 0.15); margin: 50px auto; max-width: 80%;"></div>' : ''}
+                </div>
+            `).join('');
+            
+            return `
+                <h3 class="hero-title text-4xl font-bold mb-6 text-center" style="color: var(--maroon-dark);">${title}</h3>
+                <div class="gold-accent-line mb-8"></div>
+                
+                <div style="margin-bottom: 20px; padding: 15px; background: rgba(212, 175, 55, 0.1); border-radius: 12px; text-align: center; border-left: 4px solid var(--gold-accent);">
+                    <p class="text-sm" style="color: var(--maroon-dark);">
+                        <strong>📸 Gallery View:</strong> All images are displayed in full size. Scroll down to view all ${fileData.paths.length} documentation photos.
+                    </p>
+                </div>
+                
+                <div class="gallery-viewer">
+                    ${imagesHTML}
                 </div>
             `;
         }
