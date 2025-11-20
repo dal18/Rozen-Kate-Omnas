@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rozen Kate B. Omnas - Teaching Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=Cormorant+Garamond:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f3f0 0%, #faf8f5 100%);
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .subtitle-font {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        :root {
+            --maroon-dark: #5C1A1A;
+            --maroon-primary: #7D2626;
+            --maroon-medium: #991B1B;
+            --maroon-light: #B91C1C;
+            --maroon-accent: #DC2626;
+            --gold-accent: #D4AF37;
+            --cream: #FDF8F3;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid rgba(125, 38, 38, 0.1);
+            box-shadow: 0 8px 32px rgba(125, 38, 38, 0.1);
+        }
+
+        .hero-overlay {
+            background: linear-gradient(135deg, rgba(92, 26, 26, 0.75) 0%, rgba(125, 38, 38, 0.65) 50%, rgba(153, 27, 27, 0.75) 100%);
+        }
+
+        .portfolio-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border-width: -24px;
+        }
+
+        .portfolio-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .portfolio-card:hover::before {
+            left: 100%;
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(125, 38, 38, 0.25);
+            border-color: var(--maroon-medium);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--maroon-primary) 0%, var(--maroon-medium) 50%, var(--maroon-light) 100%);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(125, 38, 38, 0.4);
+        }
+
+        .hero-section {
+            background-image: url('img/profile.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(92, 26, 26, 0.85) 0%, rgba(125, 38, 38, 0.75) 50%, rgba(153, 27, 27, 0.85) 100%);
+        }
+
+        .profile-picture {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid white;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .profile-picture:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 60px rgba(212, 175, 55, 0.6);
+        }
+
+        .doc-preview {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 2px solid rgba(125, 38, 38, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .doc-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .portfolio-card:hover .doc-preview {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(125, 38, 38, 0.2);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .animate-slideInLeft {
+            animation: slideInLeft 1s ease-out;
+        }
+
+        .animate-slideInRight {
+            animation: slideInRight 1s ease-out;
+        }
+
+        .animate-scaleIn {
+            animation: scaleIn 0.8s ease-out;
+        }
+
+        .animate-delay-1 {
+            animation-delay: 0.2s;
+            animation-fill-mode: both;
+        }
+
+        .animate-delay-2 {
+            animation-delay: 0.4s;
+            animation-fill-mode: both;
+        }
+
+        .animate-delay-3 {
+            animation-delay: 0.6s;
+            animation-fill-mode: both;
+        }
+
+        .gold-accent-line {
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold-accent), transparent);
+            margin: 1rem auto;
+        }
+
+        .maroon-accent-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--maroon-primary);
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 4px;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .modal-backdrop {
+            backdrop-filter: blur(8px);
+            background: rgba(92, 26, 26, 0.8);
+        }
+
+        .modal-content {
+            background: var(--cream);
+            border: 3px solid var(--gold-accent);
+            box-shadow: 0 20px 60px rgba(125, 38, 38, 0.4);
+        }
+
+        .file-upload-area {
+            border: 2px dashed rgba(125, 38, 38, 0.3);
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--maroon-primary);
+            background: rgba(125, 38, 38, 0.05);
+        }
+
+        .uploaded-file-preview {
+            max-width: 100%;
+            max-height: 80vh;
+            margin: 1rem auto;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            display: block;
+        }
+
+        .image-viewer {
+            position: relative;
+            text-align: center;
+        }
+
+        .zoom-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .zoom-btn {
+            background: var(--maroon-primary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .zoom-btn:hover {
+            background: var(--maroon-light);
+            transform: scale(1.1);
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, var(--maroon-primary), var(--maroon-medium));
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(125, 38, 38, 0.3);
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem !important;
+            }
+
+            .profile-picture {
+                width: 200px;
+                height: 200px;
+            }
+
+            .glass-card {
+                padding: 2rem !important;
+            }
+
+            .portfolio-card {
+                padding: 1.5rem !important;
+            }
+
+            .doc-preview {
+                height: 200px;
+            }
+
+            .hero-section {
+                background-attachment: scroll;
+                min-height: 100vh;
+            }
+
+            .modal-content {
+                max-height: 85vh;
+                margin: 1rem;
+            }
+
+            .file-upload-area {
+                padding: 2rem;
+            }
+
+            .btn-primary {
+                padding: 0.875rem 1.5rem !important;
+                font-size: 0.9rem;
+            }
+
+            .gold-accent-line {
+                width: 60px;
+            }
+
+            footer {
+                padding: 2rem 0 !important;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero-title {
+                font-size: 1.75rem !important;
+            }
+
+            .subtitle-font {
+                font-size: 1rem !important;
+            }
+
+            .profile-picture {
+                width: 160px;
+                height: 160px;
+            }
+
+            .portfolio-card {
+                padding: 1.25rem !important;
+		padding:0;
+            }
+
+            .grid {
+                gap: 1.5rem !important;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .hero-title {
+                font-size: 3rem !important;
+            }
+
+            .profile-picture {
+                width: 240px;
+                height: 240px;
+            }
+
+            .glass-card {
+                padding: 3rem !important;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .portfolio-card:hover {
+                transform: translateY(-15px) scale(1.03);
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Hero Section -->
+    <section class="hero-section min-h-screen flex items-center justify-center relative">
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto py-20">
+            <!-- Decorative Elements -->
+            <div class="floating mb-8">
+                <span class="maroon-accent-dot" style="background: var(--gold-accent);"></span>
+                <span class="maroon-accent-dot" style="background: var(--gold-accent);"></span>
+                <span class="maroon-accent-dot" style="background: var(--gold-accent);"></span>
+            </div>
+
+            <!-- Profile Picture -->
+            <div class="animate-scaleIn mb-8">
+                <div class="inline-block">
+                    <img id="profilePic" src="img/profile.jpg" alt="Rozen Kate B. Omnas" class="profile-picture">
+                </div>
+            </div>
+
+            <!-- Name Card -->
+            <div class="glass-card rounded-3xl p-10 md:p-14 mb-12 animate-fadeInUp shadow-2xl">
+                <h2 class="subtitle-font text-xl md:text-2xl font-semibold mb-4 tracking-wide" style="color: var(--maroon-medium);">
+                    My Portfolio in
+                </h2>
+                <h3 class="hero-title text-2xl md:text-4xl font-bold mb-6" style="color: var(--maroon-dark);">
+                    Teaching Demonstration Field Study 2
+                </h3>
+                <div class="gold-accent-line mb-6"></div>
+                <h1 class="hero-title text-4xl md:text-6xl font-bold mb-4" style="color: var(--maroon-dark); line-height: 1.2;">
+                    ROZEN KATE B. OMNAS
+                </h1>
+                <div class="gold-accent-line mb-6"></div>
+                <p class="subtitle-font text-2xl md:text-3xl font-semibold tracking-wide" style="color: var(--maroon-medium);">
+                    BSED – English 4
+                </p>
+                <p class="subtitle-font text-lg md:text-xl mt-4 italic" style="color: var(--maroon-primary);">
+                    "Inspiring minds through literature and language"
+                </p>
+            </div>
+
+            <!-- My Works Title -->
+            <div class="animate-fadeInUp animate-delay-1">
+                <h2 class="hero-title text-4xl md:text-6xl font-bold text-white mb-3 drop-shadow-lg">
+                    My Works
+                </h2>
+                <div class="gold-accent-line" style="background: linear-gradient(90deg, transparent, white, transparent);"></div>
+                <p class="subtitle-font text-white text-lg md:text-xl mt-4 drop-shadow-md">
+                    A Collection of Academic Excellence
+                </p>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 floating">
+            <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3 cursor-pointer" onclick="scrollToPortfolio()">
+                <svg class="w-6 h-6" style="color: var(--gold-accent);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Items Section -->
+    <section id="portfolioSection" class="py-24 px-4" style="background: linear-gradient(180deg, var(--cream) 0%, #ffffff 100%);">
+        <div class="max-w-[1800px] mx-auto px-6">
+            
+            <!-- Section Header -->
+            <div class="text-center mb-20 animate-fadeInUp">
+                <span class="maroon-accent-dot"></span>
+                <span class="maroon-accent-dot"></span>
+                <span class="maroon-accent-dot"></span>
+                <h3 class="hero-title text-4xl md:text-5xl font-bold mt-6 mb-4" style="color: var(--maroon-dark);">
+                    Academic Portfolio
+                </h3>
+                <div class="gold-accent-line"></div>
+                <p class="subtitle-font text-xl md:text-2xl mt-6 max-w-3xl mx-auto" style="color: var(--maroon-medium);">
+                    A curated collection of my educational works and professional achievements
+                </p>
+            </div>
+
+            <!-- Portfolio Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
+                
+                <!-- Card 1: Lesson Plan -->
+                <div class="portfolio-card glass-card rounded-3xl p-12 shadow-xl animate-slideInLeft">
+                    <div class="doc-preview">
+                        <img src="artifacts/lesson.png" alt="Lesson Plan Preview" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    
+                    <h4 class="hero-title text-3xl md:text-4xl font-bold mb-4 text-center" style="color: var(--maroon-dark);">
+                        Lesson Plan
+                    </h4>
+                    <div class="gold-accent-line"></div>
+                    <p class="subtitle-font text-xl text-center mb-8 leading-relaxed" style="color: var(--maroon-medium);">
+                        Comprehensive lesson planning document showcasing educational methodology
+                    </p>
+                    
+                    <button onclick="viewFile('lesson-plan')" class="btn-primary w-full py-5 px-8 text-white font-semibold text-lg rounded-2xl flex items-center justify-center gap-3 relative overflow-hidden">
+                        <svg class="w-7 h-7 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        <span class="relative z-10">View Document</span>
+                    </button>
+                </div>
+
+                <!-- Card 2: Evaluation Sheet -->
+                <div class="portfolio-card glass-card rounded-3xl p-12 shadow-xl animate-fadeInUp animate-delay-1">
+                    <div class="doc-preview">
+                        <img src="artifacts/lesson.png" alt="Evaluation Sheet Preview" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    
+                    <h4 class="hero-title text-3xl md:text-4xl font-bold mb-4 text-center" style="color: var(--maroon-dark);">
+                        Evaluation Sheet
+                    </h4>
+                    <div class="gold-accent-line"></div>
+                    <p class="subtitle-font text-xl text-center mb-8 leading-relaxed" style="color: var(--maroon-medium);">
+                        Student assessment and evaluation framework demonstration
+                    </p>
+                    
+                    <button onclick="viewFile('evaluation-sheet')" class="btn-primary w-full py-5 px-8 text-white font-semibold text-lg rounded-2xl flex items-center justify-center gap-3 relative overflow-hidden">
+                        <svg class="w-7 h-7 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <span class="relative z-10">View Image</span>
+                    </button>
+                </div>
+
+                <!-- Card 3: Documentation -->
+                <div class="portfolio-card glass-card rounded-3xl p-12 shadow-xl animate-slideInRight animate-delay-2">
+                    <div class="doc-preview">
+                        <img src="artifacts/lesson.png" alt="Documentation Preview" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    
+                    <h4 class="hero-title text-3xl md:text-4xl font-bold mb-4 text-center" style="color: var(--maroon-dark);">
+                        Documentation
+                    </h4>
+                    <div class="gold-accent-line"></div>
+                    <p class="subtitle-font text-xl text-center mb-8 leading-relaxed" style="color: var(--maroon-medium);">
+                        Visual and written documentation of educational activities
+                    </p>
+                    
+                    <button onclick="viewFile('documentation')" class="btn-primary w-full py-5 px-8 text-white font-semibold text-lg rounded-2xl flex items-center justify-center gap-3 relative overflow-hidden">
+                        <svg class="w-7 h-7 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <span class="relative z-10">View Files</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16" style="background: linear-gradient(135deg, var(--maroon-dark) 0%, var(--maroon-primary) 100%);">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <div class="mb-8 animate-fadeInUp">
+                <span class="maroon-accent-dot" style="background: var(--gold-accent);"></span>
+                <span class="maroon-accent-dot" style="background: var(--gold-accent);"></span>
+                <span class="maroon-accent-dot" style="background: var(--gold-accent);"></span>
+            </div>
+            <div class="mb-6">
+                <h5 class="hero-title text-3xl font-bold mb-3 text-white">Rozen Kate B. Omnas</h5>
+                <p class="subtitle-font text-xl" style="color: var(--gold-accent);">BSED – English 4</p>
+            </div>
+            <div style="width: 100px; height: 2px; background: linear-gradient(90deg, transparent, var(--gold-accent), transparent); margin: 1.5rem auto;"></div>
+            <p class="subtitle-font text-lg text-white italic mb-6">
+                "A portfolio created with passion, dedication, and academic excellence"
+            </p>
+            <p class="text-white text-opacity-70 text-sm">
+                © 2025 Rozen Kate B. Omnas. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div id="fileModal" class="hidden fixed inset-0 modal-backdrop z-50 flex items-center justify-center p-4">
+        <div class="modal-content rounded-3xl max-w-5xl w-full max-h-[90vh] overflow-y-auto relative animate-scaleIn shadow-2xl">
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-white rounded-full w-12 h-12 flex items-center justify-center hover:scale-110 transition-all z-20 shadow-lg" style="background: var(--maroon-primary);">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            <div id="modalContent" class="p-10">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // File paths configuration - supports multiple file types
+        const filePaths = {
+            lessonPlan: {
+                path: 'artifacts/lesson.pdf', // Change extension as needed: .pdf, .docx, .jpg, .png
+                type: 'pdf', // Change to: 'pdf', 'docx', 'image'
+                preview: 'artifacts/lesson.png' // Preview image for cards
+            },
+            evalSheet: {
+                path: 'artifacts/lesson.png',
+                type: 'image',
+                preview: 'artifacts/lesson.png'
+            },
+            documentation: {
+                path: 'artifacts/lesson.png',
+                type: 'image',
+                preview: 'artifacts/lesson.png'
+            }
+        };
+
+        let currentZoom = 1;
+        let currentImage = null;
+
+        function scrollToPortfolio() {
+            document.getElementById('portfolioSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function viewFile(fileType) {
+            const modal = document.getElementById('fileModal');
+            const modalContent = document.getElementById('modalContent');
+            currentZoom = 1;
+            
+            let content = '';
+            let fileData = null;
+            let title = '';
+            
+            switch(fileType) {
+                case 'lesson-plan':
+                    fileData = filePaths.lessonPlan;
+                    title = 'Lesson Plan';
+                    break;
+                case 'evaluation-sheet':
+                    fileData = filePaths.evalSheet;
+                    title = 'Evaluation Sheet';
+                    break;
+                case 'documentation':
+                    fileData = filePaths.documentation;
+                    title = 'Documentation';
+                    break;
+            }
+            
+            // Generate content based on file type
+            if (fileData.type === 'image') {
+                content = generateImageViewer(fileData, title);
+            } else if (fileData.type === 'pdf') {
+                content = generatePDFViewer(fileData, title);
+            } else if (fileData.type === 'docx') {
+                content = generateDocxViewer(fileData, title);
+            }
+            
+            modalContent.innerHTML = content;
+            modal.classList.remove('hidden');
+            
+            if (fileData.type === 'image') {
+                currentImage = document.getElementById('viewerImage');
+            }
+        }
+
+        function generateImageViewer(fileData, title) {
+            return `
+                <h3 class="hero-title text-4xl font-bold mb-6 text-center" style="color: var(--maroon-dark);">${title}</h3>
+                <div class="gold-accent-line mb-8"></div>
+                
+                <div class="image-viewer">
+                    <div class="zoom-controls">
+                        <button class="zoom-btn" onclick="resetZoom()" title="Reset">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div style="overflow: auto; max-height: 70vh; border-radius: 12px; background: #f5f5f5; padding: 20px;">
+                        <img id="viewerImage" src="${fileData.path}" class="uploaded-file-preview" alt="${title}" style="transition: transform 0.3s ease; cursor: zoom-in;" onclick="toggleZoom()">
+                    </div>
+                    
+                    <a href="${fileData.path}" download="${title.replace(/ /g, '-')}" class="download-btn">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Download ${title}
+                    </a>
+                </div>
+            `;
+        }
+
+        function generatePDFViewer(fileData, title) {
+            // Detect device type
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            
+            return `
+                <h3 class="hero-title text-4xl font-bold mb-6 text-center" style="color: var(--maroon-dark);">${title}</h3>
+                <div class="gold-accent-line mb-8"></div>
+                
+                <div class="document-viewer" style="text-align: center;">
+                    ${!isMobile ? `
+                    <div style="border-radius: 12px; overflow: hidden; background: #f5f5f5; padding: 10px; margin-bottom: 20px;">
+                        <iframe src="${fileData.path}" type="application/pdf" width="100%" height="700px" style="border-radius: 8px; border: none;"></iframe>
+                    </div>
+                    ` : `
+                    <div style="border-radius: 12px; overflow: hidden; background: #f5f5f5; padding: 20px; margin-bottom: 20px;">
+                        ${fileData.preview ? `
+                        <img src="${fileData.preview}" alt="${title} Preview" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        ` : `
+                        <svg class="w-32 h-32 mx-auto mb-6" style="color: var(--maroon-primary);" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/>
+                            <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+                        </svg>
+                        `}
+                        <h4 class="text-2xl font-bold mb-2" style="color: var(--maroon-dark);">PDF Document</h4>
+                        <p class="text-gray-600 mb-4">${title}.pdf</p>
+                        <p class="text-sm text-gray-500 mb-6">Tap the button below to open this document in your mobile PDF viewer.</p>
+                    </div>
+                    `}
+                    
+                    <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                        ${isMobile ? `
+                        <a href="${fileData.path}" target="_blank" class="download-btn" style="font-size: 1.1rem; padding: 16px 32px;">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                            </svg>
+                            Open in WPS/PDF Viewer
+                        </a>
+                        ` : `
+                        <a href="${fileData.path}" target="_blank" class="download-btn">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                            </svg>
+                            Open in New Tab
+                        </a>
+                        `}
+                        <a href="${fileData.path}" download="${title.replace(/ /g, '-')}.pdf" class="download-btn">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Download PDF
+                        </a>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 20px; background: rgba(125, 38, 38, 0.05); border-radius: 12px; border-left: 4px solid var(--maroon-primary);">
+                        <p class="text-sm text-gray-700">
+                            ${isMobile ? 
+                                `<strong>📱 Mobile Tip:</strong> This PDF will open in your default PDF viewer app (WPS Office, Adobe Reader, Google Drive, etc.)` : 
+                                `<strong>💻 Desktop Tip:</strong> View the PDF directly in your browser or download it for offline viewing in Adobe Reader or MS Office.`
+                            }
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateDocxViewer(fileData, title) {
+            // Detect device type
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            return `
+                <h3 class="hero-title text-4xl font-bold mb-6 text-center" style="color: var(--maroon-dark);">${title}</h3>
+                <div class="gold-accent-line mb-8"></div>
+                
+                <div class="document-viewer" style="text-align: center;">
+                    <div style="border-radius: 12px; overflow: hidden; background: #f5f5f5; padding: 20px;">
+                        ${fileData.preview ? `
+                        <img src="${fileData.preview}" alt="${title} Preview" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        ` : `
+                        <svg class="w-32 h-32 mx-auto mb-6" style="color: var(--maroon-primary);" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/>
+                            <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+                        </svg>
+                        `}
+                        <h4 class="text-2xl font-bold mb-2" style="color: var(--maroon-dark);">Word Document</h4>
+                        <p class="text-gray-600 mb-4">${title}.docx</p>
+                        <p class="text-sm text-gray-500 mb-6">
+                            ${isMobile ? 
+                                `Tap the button below to open this document in WPS Office, Microsoft Word, or Google Docs on your mobile device.` :
+                                `Click the button below to download and open this document in Microsoft Word or Office.`
+                            }
+                        </p>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <a href="${fileData.path}" ${isMobile ? 'target="_blank"' : 'download'} class="download-btn" style="font-size: 1.1rem; padding: 16px 32px;">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            ${isMobile ? 'Open in WPS/Word' : 'Download Word Document'}
+                        </a>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 20px; background: rgba(125, 38, 38, 0.05); border-radius: 12px; border-left: 4px solid var(--maroon-primary);">
+                        <p class="text-sm text-gray-700">
+                            <strong>💡 ${isMobile ? 'Mobile' : 'Desktop'} Tip:</strong> 
+                            ${isMobile ? 
+                                `You'll need WPS Office, Microsoft Word, or Google Docs app installed to view this document.` :
+                                `You'll need Microsoft Word, Google Docs, or a compatible word processor to open this file.`
+                            }
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function zoomIn() {
+            currentZoom += 0.2;
+            if (currentZoom > 3) currentZoom = 3;
+            updateZoom();
+        }
+
+        function zoomOut() {
+            currentZoom -= 0.2;
+            if (currentZoom < 0.5) currentZoom = 0.5;
+            updateZoom();
+        }
+
+        function resetZoom() {
+            currentZoom = 1;
+            updateZoom();
+        }
+
+        function toggleZoom() {
+            if (currentZoom === 1) {
+                currentZoom = 2;
+            } else {
+                currentZoom = 1;
+            }
+            updateZoom();
+        }
+
+        function updateZoom() {
+            if (currentImage) {
+                currentImage.style.transform = `scale(${currentZoom})`;
+                currentImage.style.cursor = currentZoom === 1 ? 'zoom-in' : 'zoom-out';
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('fileModal');
+            modal.classList.add('hidden');
+            currentZoom = 1;
+            currentImage = null;
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('fileModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            const modal = document.getElementById('fileModal');
+            if (!modal.classList.contains('hidden')) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                } else if (e.key === '+' || e.key === '=') {
+                    zoomIn();
+                } else if (e.key === '-') {
+                    zoomOut();
+                } else if (e.key === '0') {
+                    resetZoom();
+                }
+            }
+        });
+
+        // Touch gestures for mobile
+        let touchStartDistance = 0;
+        document.addEventListener('touchstart', function(e) {
+            if (e.touches.length === 2 && currentImage) {
+                touchStartDistance = Math.hypot(
+                    e.touches[0].pageX - e.touches[1].pageX,
+                    e.touches[0].pageY - e.touches[1].pageY
+                );
+            }
+        });
+
+        document.addEventListener('touchmove', function(e) {
+            if (e.touches.length === 2 && currentImage && touchStartDistance > 0) {
+                e.preventDefault();
+                const touchDistance = Math.hypot(
+                    e.touches[0].pageX - e.touches[1].pageX,
+                    e.touches[0].pageY - e.touches[1].pageY
+                );
+                const scale = touchDistance / touchStartDistance;
+                currentZoom = Math.min(Math.max(currentZoom * scale, 0.5), 3);
+                updateZoom();
+                touchStartDistance = touchDistance;
+            }
+        });
+    </script>
+</body>
+</html>
