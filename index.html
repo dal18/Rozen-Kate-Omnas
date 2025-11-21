@@ -564,7 +564,7 @@
         <!-- Portfolio Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
             
-            <!-- Card 1: Lesson Plan -->
+            <!-- Card 1: Lesson Plans (2 PDFs) -->
             <div class="portfolio-card glass-card rounded-2xl overflow-hidden shadow-xl animate-slideInLeft">
                 <div class="doc-preview">
                     <img src="artifacts/lesson.png" alt="Lesson Plan Preview">
@@ -572,19 +572,18 @@
                 
                 <div class="p-6">
                     <h4 class="hero-title text-2xl md:text-3xl font-bold mb-3 text-center" style="color: var(--maroon-dark);">
-                        Lesson Plan
+                        Lesson Plans
                     </h4>
                     <div class="gold-accent-line" style="margin: 0.75rem auto;"></div>
                     <p class="subtitle-font text-lg text-center mb-6 leading-relaxed" style="color: var(--maroon-medium); min-height: 3.5rem;">
-                        Comprehensive lesson planning document showcasing educational methodology
+                        Comprehensive lesson planning documents showcasing educational methodology
                     </p>
                     
-                    <button onclick="viewFile('lesson-plan')" class="btn-primary w-full py-4 px-6 text-white font-semibold text-base rounded-xl flex items-center justify-center gap-3 relative overflow-hidden">
+                    <button onclick="viewFile('lesson-plans')" class="btn-primary w-full py-4 px-6 text-white font-semibold text-base rounded-xl flex items-center justify-center gap-3 relative overflow-hidden">
                         <svg class="w-6 h-6 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
-                        <span class="relative z-10">View Document</span>
+                        <span class="relative z-10">View Documents</span>
                     </button>
                 </div>
             </div>
@@ -600,10 +599,9 @@
                         Evaluation Sheet
                     </h4>
                     <div class="gold-accent-line" style="margin: 0.75rem auto;"></div>
-                     <p class="subtitle-font text-lg text-center mb-6 leading-relaxed" style="color: var(--maroon-medium); min-height: 3.5rem;">
-                     Assessment and evaluation framework demonstration
+                    <p class="subtitle-font text-lg text-center mb-6 leading-relaxed" style="color: var(--maroon-medium); min-height: 3.5rem;">
+                        &nbsp;
                     </p>
-                    
                     
                     <button onclick="viewFile('evaluation-sheet')" class="btn-primary w-full py-4 px-6 text-white font-semibold text-base rounded-xl flex items-center justify-center gap-3 relative overflow-hidden">
                         <svg class="w-6 h-6 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -625,8 +623,8 @@
                         Documentation
                     </h4>
                     <div class="gold-accent-line" style="margin: 0.75rem auto;"></div>
-<p class="subtitle-font text-lg text-center mb-6 leading-relaxed" style="color: var(--maroon-medium); min-height: 3.5rem;">
-                                Visual documentation of educational activities
+                    <p class="subtitle-font text-lg text-center mb-6 leading-relaxed" style="color: var(--maroon-medium); min-height: 3.5rem;">
+                        &nbsp;
                     </p>
                     
                     <button onclick="viewFile('documentation')" class="btn-primary w-full py-4 px-6 text-white font-semibold text-base rounded-xl flex items-center justify-center gap-3 relative overflow-hidden">
@@ -679,9 +677,20 @@
     <script>
         // File paths configuration - supports multiple file types
         const filePaths = {
-            lessonPlan: {
-                path: 'artifacts/lesson.pdf',
-                type: 'pdf',
+            lessonPlans: {
+                plans: [
+                    {
+                        path: 'artifacts/lesson.pdf',
+                        preview: 'artifacts/lesson.png',
+                        title: 'Lesson Plan 1: Techniques in Public Speaking'
+                    },
+                    {
+                        path: 'artifacts/exposition.pdf',
+                        preview: 'artifacts/exposition.png',
+                        title: 'Lesson Plan 2: Types of Exposition Writing'
+                    }
+                ],
+                type: 'pdf-gallery',
                 preview: 'artifacts/lesson.png'
             },
             evalSheet: {
@@ -719,9 +728,9 @@
             let title = '';
             
             switch(fileType) {
-                case 'lesson-plan':
-                    fileData = filePaths.lessonPlan;
-                    title = 'Lesson Plan';
+                case 'lesson-plans':
+                    fileData = filePaths.lessonPlans;
+                    title = 'Lesson Plans';
                     break;
                 case 'evaluation-sheet':
                     fileData = filePaths.evalSheet;
@@ -733,14 +742,14 @@
                     break;
             }
             
-            if (fileData.type === 'gallery') {
+            if (fileData.type === 'pdf-gallery') {
+                content = generatePDFGalleryViewer(fileData, title);
+            } else if (fileData.type === 'gallery') {
                 content = generateGalleryViewer(fileData, title);
             } else if (fileData.type === 'image') {
                 content = generateImageViewer(fileData, title);
             } else if (fileData.type === 'pdf') {
                 content = generatePDFViewer(fileData, title);
-            } else if (fileData.type === 'docx') {
-                content = generateDocxViewer(fileData, title);
             }
             
             modalContent.innerHTML = content;
@@ -749,6 +758,90 @@
             if (fileData.type === 'image') {
                 currentImage = document.getElementById('viewerImage');
             }
+        }
+
+        function generatePDFGalleryViewer(fileData, title) {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            const plansHTML = fileData.plans.map((plan, index) => `
+                <div class="gallery-item mb-10" style="page-break-inside: avoid;">
+                    <h4 class="subtitle-font text-2xl font-bold mb-6 text-center" style="color: var(--maroon-medium);">
+                        📚 ${plan.title}
+                    </h4>
+                    
+                    <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 20px;">
+                        ${!isMobile ? `
+                        <div style="border-radius: 12px; overflow: hidden; background: #f5f5f5; padding: 10px;">
+                            <iframe src="${plan.path}" type="application/pdf" width="100%" height="700px" style="border-radius: 8px; border: none;"></iframe>
+                        </div>
+                        ` : `
+                        <div style="text-align: center;">
+                            ${plan.preview ? `
+                            <img src="${plan.preview}" alt="${plan.title} Preview" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                            ` : `
+                            <svg class="w-32 h-32 mx-auto mb-6" style="color: var(--maroon-primary);" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/>
+                                <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+                            </svg>
+                            `}
+                            <h5 class="text-xl font-bold mb-2" style="color: var(--maroon-dark);">PDF Document</h5>
+                            <p class="text-gray-600 mb-4">${plan.title}</p>
+                            <p class="text-sm text-gray-500 mb-6">Tap the button below to open this document in your mobile PDF viewer.</p>
+                        </div>
+                        `}
+                    </div>
+                    
+                    <div style="text-align: center; margin-bottom: 30px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                        ${isMobile ? `
+                        <a href="${plan.path}" target="_blank" class="download-btn">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                            </svg>
+                            Open in WPS/PDF Viewer
+                        </a>
+                        ` : `
+                        <a href="${plan.path}" target="_blank" class="download-btn">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                            </svg>
+                            Open in New Tab
+                        </a>
+                        `}
+                        <a href="${plan.path}" download="${plan.title.replace(/ /g, '-')}.pdf" class="download-btn">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Download PDF
+                        </a>
+                    </div>
+                    
+                    ${index < fileData.plans.length - 1 ? '<div style="border-bottom: 3px solid rgba(125, 38, 38, 0.15); margin: 50px auto; max-width: 80%;"></div>' : ''}
+                </div>
+            `).join('');
+            
+            return `
+                <h3 class="hero-title text-4xl font-bold mb-6 text-center" style="color: var(--maroon-dark);">${title}</h3>
+                <div class="gold-accent-line mb-8"></div>
+                
+                <div style="margin-bottom: 20px; padding: 15px; background: rgba(212, 175, 55, 0.1); border-radius: 12px; text-align: center; border-left: 4px solid var(--gold-accent);">
+                    <p class="text-sm" style="color: var(--maroon-dark);">
+                        <strong>📖 Lesson Plans Collection:</strong> View all ${fileData.plans.length} detailed lesson plans. ${isMobile ? 'Tap to open in your PDF viewer.' : 'Scroll to browse through all plans.'}
+                    </p>
+                </div>
+                
+                <div class="gallery-viewer">
+                    ${plansHTML}
+                </div>
+                
+                <div style="margin-top: 30px; padding: 20px; background: rgba(125, 38, 38, 0.05); border-radius: 12px; border-left: 4px solid var(--maroon-primary);">
+                    <p class="text-sm text-gray-700">
+                        ${isMobile ? 
+                            `<strong>📱 Mobile Tip:</strong> PDFs will open in your default PDF viewer app (WPS Office, Adobe Reader, Google Drive, etc.)` : 
+                            `<strong>💻 Desktop Tip:</strong> View PDFs directly in your browser or download them for offline viewing.`
+                        }
+                    </p>
+                </div>
+            `;
         }
 
         function generateImageViewer(fileData, title) {
@@ -880,88 +973,6 @@
             `;
         }
 
-        function generateDocxViewer(fileData, title) {
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            
-            return `
-                <h3 class="hero-title text-4xl font-bold mb-6 text-center" style="color: var(--maroon-dark);">${title}</h3>
-                <div class="gold-accent-line mb-8"></div>
-                
-                <div class="document-viewer" style="text-align: center;">
-                    <div style="border-radius: 12px; overflow: hidden; background: #f5f5f5; padding: 20px;">
-                        ${fileData.preview ? `
-                        <img src="${fileData.preview}" alt="${title} Preview" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                        ` : `
-                        <svg class="w-32 h-32 mx-auto mb-6" style="color: var(--maroon-primary);" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/>
-                            <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
-                        </svg>
-                        `}
-                        <h4 class="text-2xl font-bold mb-2" style="color: var(--maroon-dark);">Word Document</h4>
-                        <p class="text-gray-600 mb-4">${title}.docx</p>
-                        <p class="text-sm text-gray-500 mb-6">
-                            ${isMobile ? 
-                                `Tap the button below to open this document in WPS Office, Microsoft Word, or Google Docs.` :
-                                `Click the button below to download and open this document in Microsoft Word.`
-                            }
-                        </p>
-                    </div>
-                    
-                    <div style="margin-top: 20px;">
-                        <a href="${fileData.path}" ${isMobile ? 'target="_blank"' : 'download'} class="download-btn" style="font-size: 1.1rem; padding: 16px 32px;">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                            </svg>
-                            ${isMobile ? 'Open in WPS/Word' : 'Download Word Document'}
-                        </a>
-                    </div>
-                    
-                    <div style="margin-top: 30px; padding: 20px; background: rgba(125, 38, 38, 0.05); border-radius: 12px; border-left: 4px solid var(--maroon-primary);">
-                        <p class="text-sm text-gray-700">
-                            <strong>💡 ${isMobile ? 'Mobile' : 'Desktop'} Tip:</strong> 
-                            ${isMobile ? 
-                                `You'll need WPS Office, Microsoft Word, or Google Docs app installed to view this document.` :
-                                `You'll need Microsoft Word, Google Docs, or a compatible word processor to open this file.`
-                            }
-                        </p>
-                    </div>
-                </div>
-            `;
-        }
-
-        function zoomIn() {
-            currentZoom += 0.2;
-            if (currentZoom > 3) currentZoom = 3;
-            updateZoom();
-        }
-
-        function zoomOut() {
-            currentZoom -= 0.2;
-            if (currentZoom < 0.5) currentZoom = 0.5;
-            updateZoom();
-        }
-
-        function resetZoom() {
-            currentZoom = 1;
-            updateZoom();
-        }
-
-        function toggleZoom() {
-            if (currentZoom === 1) {
-                currentZoom = 2;
-            } else {
-                currentZoom = 1;
-            }
-            updateZoom();
-        }
-
-        function updateZoom() {
-            if (currentImage) {
-                currentImage.style.transform = `scale(${currentZoom})`;
-                currentImage.style.cursor = currentZoom === 1 ? 'zoom-in' : 'zoom-out';
-            }
-        }
-
         function closeModal() {
             const modal = document.getElementById('fileModal');
             modal.classList.add('hidden');
@@ -982,41 +993,9 @@
             if (!modal.classList.contains('hidden')) {
                 if (e.key === 'Escape') {
                     closeModal();
-                } else if (e.key === '+' || e.key === '=') {
-                    zoomIn();
-                } else if (e.key === '-') {
-                    zoomOut();
-                } else if (e.key === '0') {
-                    resetZoom();
                 }
-            }
-        });
-
-        // Touch gestures for mobile
-        let touchStartDistance = 0;
-        document.addEventListener('touchstart', function(e) {
-            if (e.touches.length === 2 && currentImage) {
-                touchStartDistance = Math.hypot(
-                    e.touches[0].pageX - e.touches[1].pageX,
-                    e.touches[0].pageY - e.touches[1].pageY
-                );
-            }
-        });
-
-        document.addEventListener('touchmove', function(e) {
-            if (e.touches.length === 2 && currentImage && touchStartDistance > 0) {
-                e.preventDefault();
-                const touchDistance = Math.hypot(
-                    e.touches[0].pageX - e.touches[1].pageX,
-                    e.touches[0].pageY - e.touches[1].pageY
-                );
-                const scale = touchDistance / touchStartDistance;
-                currentZoom = Math.min(Math.max(currentZoom * scale, 0.5), 3);
-                updateZoom();
-                touchStartDistance = touchDistance;
             }
         });
     </script>
 </body>
 </html>
-
